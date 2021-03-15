@@ -1,7 +1,9 @@
 import requests
 
 class RequestSEFAZ:
-
+	'''
+	Request from SEFAZ Economiza Alagoas
+	'''
 	def __init__(self):
 		super().__init__()
 	
@@ -22,6 +24,9 @@ class RequestSEFAZ:
 		return r
 
 class RequestGet():
+	'''
+	Request data, useful with Portal de Compras Governamentais
+	'''
 	count = None
 	returnedData = None
 

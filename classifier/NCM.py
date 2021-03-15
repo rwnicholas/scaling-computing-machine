@@ -5,6 +5,49 @@ import os
 from datetime import datetime
 
 class NCM:
+	'''
+	Class to manipulate SINAPI XLSX
+	
+	Functions
+	----------
+	info : str
+		
+		Returns dataframe head()
+	
+	split : Dataframe
+
+		Splits ncm codes when | is detected on string
+
+	save(savingName : str) : None
+	
+		Saves dataframe into csv
+
+	generalizeString(column : str -> column name) : None
+	
+		Applies keepOnlyAlpha(), removes duplicates and reorder to descending.
+		Useful to use as searching string
+
+	removeSpaces : None
+	
+		Removes duplicated whitespaces.
+
+	limitSizeRemovingWord(string : str) : str
+
+		Limits string size by 30, considering it is a full-word. Ex: 'Its a pure example', if it were limited by len == 15, then the string would be cut to only 'Its a pure', excluding 'example' entirely as it would be incomplet.
+
+	limitTwoWords(string : str) : str
+
+		Limits the input to only two terms. Ex: 'Its pure example' -> 'Its pure'.
+
+	keepOnlyAlpha(text : str) : str
+
+		Removes non-alpha characters, noise and specific terms of SINAPI.
+
+	returnCleanData(oldFilename : str, newFilename : str) : Dataframe
+
+		Applies removeSpaces(), then concat the two entries and removes duplicates.
+	'''
+
 	data = None
 	
 	def __init__(self, fileName, date=None):
@@ -20,9 +63,19 @@ class NCM:
 		self.data['DATA'] = date
 
 	def info(self):
+		'''
+		info : str
+		
+		Returns dataframe head()
+		'''
 		return self.data.head()
 
 	def split(self):
+		'''
+		split : Dataframe
+
+		Splits ncm codes when | is detected on string
+		'''
 		self.data["ncm"] = self.data["ncm"].str.split("|")
 		self.data = self.data.apply(pd.Series.explode)
 
@@ -36,16 +89,32 @@ class NCM:
 		return self.data
 
 	def save(self, savingName):
+		'''
+		save(savingName : str) : None
+	
+		Saves dataframe into csv
+		'''
 		self.data.to_csv(savingName, index=False)
 
 	def generalizeString(self, column='DESCRICAO DO INSUMO'):
-		self.data[column] = self.data[column].apply(lambda x: self.keepOnlyAlhpa(x))
+		'''
+		generalizeString(column : str -> column name) : None
+	
+		Applies keepOnlyAlpha(), removes duplicates and reorder to descending.
+		Useful to use as searching string
+		'''
+		self.data[column] = self.data[column].apply(lambda x: self.keepOnlyAlpha(x))
 		self.data = self.data.sort_values(column, ascending=False)
 		self.data.drop_duplicates(subset=column, keep='first', inplace=True)
 		self.data = self.data.reset_index()
 		self.data = self.data.drop("index", axis=1)
 	
 	def removeSpaces(self):
+		'''
+		removeSpaces : None
+	
+		Removes duplicated whitespaces.
+		'''
 		self.data['DESCRICAO DO INSUMO'] = self.data['DESCRICAO DO INSUMO'].apply(lambda x: re.sub('\s{2,}', ' ', x))
 		self.data['DESCRICAO DO INSUMO'] = self.data['DESCRICAO DO INSUMO'].apply(lambda x: x.replace("!EM PROCESSO DESATIVACAO!", ""))
 		self.data['DESCRICAO DO INSUMO'] = self.data['DESCRICAO DO INSUMO'].apply(lambda x: x.replace("!EM PROCESSO DE DESATIVACAO!", ""))
@@ -55,6 +124,11 @@ class NCM:
 		self.data['PRECO MEDIANO R$'] = self.data['PRECO MEDIANO R$'].apply(lambda x: re.sub('\s{2,}', ' ', x))
 
 	def limitSizeRemovingWord(self, string):
+		'''
+		limitSizeRemovingWord(string : str) : str
+
+		Limits string size by 30, considering it is a full-word. Ex: 'Its a pure example', if it were limited by len == 15, then the string would be cut to only 'Its a pure', excluding 'example' entirely as it would be incomplet.
+		'''
 		MAX_LENGHT = 30
 		if len(string) > MAX_LENGHT:
 			work_string = string[:MAX_LENGHT+1]
@@ -73,6 +147,11 @@ class NCM:
 		return new_string
 
 	def limitTwoWords(self, string):
+		'''
+		limitTwoWords(string : str) : str
+
+		Limits the input to only two terms. Ex: 'Its pure example' -> 'Its pure'.
+		'''
 		countSpaces = 0
 		QTD_WORDS = 2
 		for i in range(len(string)):
@@ -82,7 +161,12 @@ class NCM:
 				return string[:i]
 		return string
 
-	def keepOnlyAlhpa(self, text):
+	def keepOnlyAlpha(self, text):
+		'''
+		keepOnlyAlpha(text : str) : str
+
+		Removes non-alpha characters, noise and specific terms of SINAPI.
+		'''
 		output = list([val for val in text
 						if val.isalpha() or val == " "])
 		output = "".join(output)
@@ -110,7 +194,11 @@ class NCM:
 		return output
 
 def returnCleanData(oldFilename, newFilename):
+	'''
+	returnCleanData(oldFilename : str, newFilename : str) : Dataframe
 
+		Applies removeSpaces(), then concat the two entries and removes duplicates.
+	'''
 	dataOld = NCM(oldFilename, datetime.fromtimestamp(os.path.getmtime(oldFilename)).strftime('%Y-%m-%d'))
 	dataOld.removeSpaces()
 
