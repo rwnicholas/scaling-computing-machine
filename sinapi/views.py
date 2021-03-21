@@ -4,11 +4,11 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from .models import Material,Material_Historico_Precos
 from AquiSeFaz.views import index
-import classificador.NCM
+import classifier.NCM
 # Create your views here.
 
 def sinapi(request):
-    data = classificador.NCM.returnCleanData('static/baseOld.xls', 'static/baseNew.xls')
+    data = classifier.NCM.returnCleanData('static/baseOld.xls', 'static/baseNew.xls')
     context = {
         'status': True
     }

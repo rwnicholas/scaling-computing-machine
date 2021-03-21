@@ -7,8 +7,11 @@ import PortalComprasGov.models
 
 # Create your views here.
 
-def index(request, context = {}):
-    return render(request, 'index.html', context=context)
+def retriveAPIs(request, context = {}):
+    return render(request, 'retrieveInfoFromAPIs.html', context=context)
+
+def index(request):
+    return render(request, 'index.html')
 
 def searchPrice(request):
     context = {}

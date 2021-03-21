@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from classificador.Request import RequestGet
+from classifier.Request import RequestGet
 from AquiSeFaz.views import index
 from .models import Material, Material_Historico_Precos, GrupoMaterial
 from django.db import IntegrityError
