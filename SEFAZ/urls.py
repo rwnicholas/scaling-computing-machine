@@ -26,5 +26,6 @@ urlpatterns = [
     path('ecoal/', urlEcoAL.ecoal, name='ecoal'),
     path('portalCompras/', urlPortalComprasGov.portalCompras, name='portalComprasGov'),
     path('', url.index, name='Index'),
+    path('retriveAPIs/', url.retriveAPIs, name='retrieveInfoFromAPIs'),
     path('search/', url.searchPrice, name='searchPrice')
 ]
