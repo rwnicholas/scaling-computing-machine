@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'EcoAL',
     'AquiSeFaz',
     'PortalComprasGov',
-    'django_extensions'
+    'django_extensions',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
