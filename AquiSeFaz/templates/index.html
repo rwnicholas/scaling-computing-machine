@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block imports%}
+    <title>Aqui SEFAZ</title>
+{% endblock %}
+
+{% block content %}
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+      <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">AquiSEFAZ</h1>
+        <p class="lead font-weight-normal">Here you have access for two APIs developed for SEFAZ</p>
+        <a class="btn btn-outline-secondary" href="#">Coming soon</a>
+      </div>
+      <div class="product-device box-shadow d-none d-md-block"></div>
+      <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+    </div>
+
+    <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+      <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden col-sm-6">
+        <div class="my-3 py-3">
+          <h2 class="display-5">Governamental data</h2>
+          <p class="lead">Here you can access data about prices obtained from "SINAPI", "Economiza Alagoas" and "Portal de Compras Governamentais."</p>
+        </div>
+        <div class="bg-light box-shadow mx-auto">
+          <img class="img-fluid" src="https://economizaalagoas.sefaz.al.gov.br/imagens/EconomizaAlagoas_PesquisaPreco_pequeno.png" alt="Economiza Alagoas">
+          <img class="img-fluid" src="https://oorcamentista.com.br/wp-content/uploads/2018/05/sinapi-caixa-indice-construcao-civil-oorcamentista-e1527000084809.jpg" alt="SINAPI">
+          <br>
+          <img class="img-fluid" src="http://compras.dados.gov.br/docs/resources/imagens/logo_vetorizado.png" alt="Portal de Compras Governamentais">
+        </div>
+      </div>
+      <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden col-sm-6">
+        <div class="my-3 p-3">
+          <h2 class="display-5">Commercial Prices</h2>
+          <p class="lead">And here you have access to data obtained from the current prices of big companies like "Carajás", "Leroy Merlin", " ".</p>
+        </div>
+        <div class="bg-dark box-shadow mx-auto">
+          <img class="img-fluid" src="https://carajas.vteximg.com.br/arquivos/logo-carajas1.png?v=637348362838970000" alt="Carajás">
+          <img class="img-fluid" src="https://cdn.leroymerlin.com.br/contents/logo_leroy_merlin_bae6_300x300.jpeg" alt="Leroy Merlin">
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+    </script>
+{% endblock %}
