@@ -5,7 +5,7 @@ from classifier.NCM import NCM
 from classifier.Request import RequestSEFAZ
 from classifier.KNN import KNN
 from django.db import IntegrityError
-from AquiSeFaz.views import index
+from AquiSeFaz.views import retriveAPIs
 import pandas as pd
 
 # Create your views here.
@@ -51,4 +51,4 @@ def ecoal(request):
                     context['status'] = False
                     break
 
-    return index(request, context)
+    return retriveAPIs(request, context)

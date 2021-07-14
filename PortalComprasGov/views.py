@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from classifier.Request import RequestGet
-from AquiSeFaz.views import index
+from AquiSeFaz.views import retriveAPIs
 from .models import Material, Material_Historico_Precos, GrupoMaterial
 from django.db import IntegrityError
 from datetime import datetime
@@ -114,4 +114,4 @@ def portalCompras(request):
 									break
 						print("Finished page at:", datetime.now())
 				licitacoesDescartadas.append(licitacao['identificador'])
-	return index(request, context)
+	return retriveAPIs(request, context)

@@ -3,7 +3,7 @@ from django.templatetags.static import static
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from .models import Material,Material_Historico_Precos
-from AquiSeFaz.views import index
+from AquiSeFaz.views import retriveAPIs
 import classifier.NCM
 # Create your views here.
 
@@ -34,4 +34,4 @@ def sinapi(request):
             context['status'] = False
             break
 
-    return index(request, context)
+    return retriveAPIs(request, context)
