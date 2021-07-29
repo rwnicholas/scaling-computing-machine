@@ -19,6 +19,7 @@ import sinapi.views as urlSinapi
 import EcoAL.views as urlEcoAL
 import PortalComprasGov.views as urlPortalComprasGov
 import AquiSeFaz.views as url
+import web.views as urlCommercialPrices
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,5 @@ urlpatterns = [
     path('retriveAPIs/', url.retriveAPIs, name='retrieveInfoFromAPIs'),
     path('search/', url.searchPrice, name='searchPrice'),
     path('search.json', url.searchPriceAPI, name='searchPriceAPI'),
+    path('commercialPrices/', urlCommercialPrices.index, name='commercialPrices'),
 ]

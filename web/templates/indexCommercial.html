@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block imports%}
+    <title>Commercial Prices</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 style="padding-top:2%; padding-bottom:2%; text-align:center">Sefaz API</h1>
+        <form action="" method="GET" class="form" style="padding-bottom: 2%">
+
+            <!-- Aqui no input tem o nome search que eh justamente o verificado na view pra ver o valor-->
+            <div class="input-group">
+                <input name="search" type="text" value="{{ request.GET.search }}" placeholder="Produto:" class="form-control">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="products-list">
+            <h1 style="font-size:20pt; text-align: center; padding-top: 2%">Lista de produtos no banco de dados:</h1>
+            <div class="row sticky-top" style="text-align:center; background-color:white">
+                <div class="col-3" style="color: #007bff">
+                    <h2 style="font-size:15pt; font-weight:bold">DESCRIÇÃO</h2>
+                </div>
+                <div class="col-3" style="color: #007bff; font-weight:bold">
+                    <p>PREÇO</p>
+                </div>
+                <div class="col-3" style="color: #007bff; font-weight:bold">
+                    <p>LOJA</p>
+                </div>
+                <div class="col-3" style="color: #007bff; font-weight:bold">
+                    <p>Buscar por períodos</p>
+                </div>
+
+            </div>
+            {% for produto in produtos %}
+                <form action="" method="GET" class="form" style="padding-bottom: 2%">
+
+                    <div class="row" style="text-align:center">
+                        <div class="col-3">
+                            <h2 style="font-size:10pt">{{produto.description}}</h2>
+                        </div>
+                        <div class="col-3">
+                            <p>{{ produto.price }}</p>
+                        </div>
+                        <div class="col-3">
+                            <p>{{ produto.storeName }}</p>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary" value="{{ produto.id }}" name="product_id_for_periods" type="submit">Buscar</button>
+                        </div>
+
+                    </div>
+                </form>
+                {% if productPeriodMap != None %}
+                    {% if produto.id == productPeriodMap.id %}
+                        <div style="background-color: white; padding-top:2%; padding-bottom:2%;">
+                            <div style="border: 1px solid black; ">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h3 style="text-align:center;"> Atualizações por data: </h3>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="background-color:rgba(0,123,255, .2); border:1px solid black;">
+                                    <div class="col-6">
+                                        <h5 style="text-align:center;"> Data </h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <h5 style="text-align:center;"> Preço </h5>
+                                    </div>
+                                </div>
+
+                                {% for prodFiltered in productPeriodMap.items  %}
+                                    <div class="row" style="padding-left: 1.4%; padding-right:1.4%;" >
+                                        <div class="col-6" style="border-right:1px solid black">
+
+                                            <p style="text-align:center; ">{{ prodFiltered.untilDate }}</p>
+                                        </div>
+                                        <div class="col-6"  style="background-color:white;">
+                                            <p style="text-align:center;">{{ prodFiltered.price }}</p>
+                                        </div>
+
+                                    </div>
+                                    <div style="border-top: 1px solid black">
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+
+            <form method="POST" class="form" >
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <button  class="btn btn-block btn-secondary" value="{{ back_page_number }}" name="back-btn">Voltar</button>
+<!--                        <input class="btn btn-block btn-secondary" name="back-btn" value="Voltar">-->
+                    </div>
+                    <div class="col-6">
+                        <button  class="btn btn-block btn-primary" value="{{ next_page_number }}" name="next-btn">Mais produtos</button>
+<!--                        <input class="btn btn-block btn-primary" name="next-btn" value="Próximo">-->
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+{% endblock %}
