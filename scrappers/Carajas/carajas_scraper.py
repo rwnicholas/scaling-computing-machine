@@ -51,7 +51,7 @@ class CarajasScrapper(object):
 
             try:
                 response = requests.post("http://127.0.0.1:8000/api/", data=payload)
-                print("response: ", response.status_code)
+                print("response: ", response.content)
             except Exception as e:
                 print("Exception ", e)
 
@@ -80,7 +80,7 @@ class CarajasScrapper(object):
                 "price":float(price),
                 "id":code,
                 "storeName":self.storeName,
-                "notes":"",
+                "notes":"None",
             }
         else:
             return None
