@@ -10,45 +10,43 @@ import pandas as pd
 
 # Create your views here.
 
-def ecoal(request):
-    base = NCM(None)
-    base.data = pd.DataFrame(list(sinapi_Material.objects.all().values('codigo', 'nome')))
-    base.generalizeString(column='nome')
-    knn = KNN('classifier/train_NCM.csv', 6)
+def ecoal():
+    try:
+        print("Atualizando Economiza Alagoas")
+        base = NCM(None)
+        base.data = pd.DataFrame(list(sinapi_Material.objects.all().values('codigo', 'nome')))
+        base.generalizeString(column='nome')
+        knn = KNN('classifier/train_NCM.csv', 6)
 
-    #codigoSinapi, ncm, nome, preco
-    for row in base.data.iterrows():
-        termo = row[1]['nome']
-        context = {
-            'status': True
-        }
-        r = RequestSEFAZ()
-        ecoData = r.request(term=termo)
+        #codigoSinapi, ncm, nome, preco
+        for row in base.data.iterrows():
+            termo = row[1]['nome']
+            r = RequestSEFAZ()
+            ecoData = r.request(term=termo)
 
-        for dictionary in ecoData.json():
-            if (knn.classifier(int(dictionary['codNcm'])) == "MATERIAIS DE CONSTRUCAO"):
-                try:
-                    newMaterial,created = Material.objects.get_or_create(
-                        codigoSinapi=row[1]['codigo'],
-                        codGetin=dictionary['codGetin'],
-                        ncm=dictionary['codNcm'],
-                        nome=dictionary['dscProduto']
-                    )
-                except IntegrityError: continue
-                except:
-                    context['status'] = False
-                    break
-                
-                try:
-                    newMaterialPreco = Material_Historico_Precos(
-                        idMaterial=newMaterial,
-                        preco=dictionary['valUnitarioUltimaVenda']
-                    )
+            for dictionary in ecoData.json():
+                if (knn.classifier(int(dictionary['codNcm'])) == "MATERIAIS DE CONSTRUCAO"):
+                    try:
+                        newMaterial,created = Material.objects.get_or_create(
+                            codigoSinapi=row[1]['codigo'],
+                            codGetin=dictionary['codGetin'],
+                            ncm=dictionary['codNcm'],
+                            nome=dictionary['dscProduto']
+                        )
+                    except IntegrityError: continue
+                    except:
+                        return False
+                    
+                    try:
+                        newMaterialPreco = Material_Historico_Precos(
+                            idMaterial=newMaterial,
+                            preco=dictionary['valUnitarioUltimaVenda']
+                        )
 
-                    newMaterialPreco.save()
-                except IntegrityError: continue
-                except:
-                    context['status'] = False
-                    break
-
-    return retriveAPIs(request, context)
+                        newMaterialPreco.save()
+                    except IntegrityError: continue
+                    except:
+                        return False
+        return True
+    except:
+        return False

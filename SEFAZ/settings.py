@@ -40,13 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sinapi',
     'EcoAL',
-    'AquiSeFaz',
     'PortalComprasGov',
     'django_extensions',
     'rest_framework',
     'API',
     'web',
     'bootstrap4',
+    'AquiSeFaz.apps.AquisefazConfig',
 ]
 
 MIDDLEWARE = [
