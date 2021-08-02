@@ -24,9 +24,9 @@ import web.views as urlCommercialPrices
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sinapi/', urlSinapi.sinapi, name='sinapi'),
-    path('ecoal/', urlEcoAL.ecoal, name='ecoal'),
-    path('portalCompras/', urlPortalComprasGov.portalCompras, name='portalComprasGov'),
+    # path('sinapi/', urlSinapi.sinapi, name='sinapi'),
+    # path('ecoal/', urlEcoAL.ecoal, name='ecoal'),
+    # path('portalCompras/', urlPortalComprasGov.portalCompras, name='portalComprasGov'),
     path('', url.index, name='Index'),
     path('retriveAPIs/', url.retriveAPIs, name='retrieveInfoFromAPIs'),
     path('search/', url.searchPrice, name='searchPrice'),
