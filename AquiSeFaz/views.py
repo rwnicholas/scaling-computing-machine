@@ -33,6 +33,7 @@ def searchPriceBase(searchTerm):
     for material in sinapiMateriais:
         sinapiDict[material.nome] = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
         sinapiDict[material.nome] = sinapiDict[material.nome][0]
+        sinapiDict[material.nome]  = [sinapiDict[material.nome], material.unidade]
     OutputDict['SINAPI'] = sinapiDict
 
     #### Economiza Alagoas
@@ -47,6 +48,7 @@ def searchPriceBase(searchTerm):
     for material in comprasGovMateriais:
         comprasGovDict[material.descricao] = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
         comprasGovDict[material.descricao] = comprasGovDict[material.descricao][0]
+        comprasGovDict[material.descricao] = [comprasGovDict[material.nome], material.unidade]
     OutputDict['comprasGov'] = comprasGovDict
 
     if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):

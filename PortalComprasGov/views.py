@@ -84,8 +84,7 @@ def portalCompras():
 											descricao=DescMat,
 										)
 									except IntegrityError: continue
-									except:
-										return False
+
 
 									try:
 										newMaterial,created = Material.objects.get_or_create(
@@ -95,8 +94,7 @@ def portalCompras():
 											unidade=item['unidade']
 										)
 									except IntegrityError: continue
-									except:
-										return False
+
 									
 									try:
 										newPrecoMaterial = Material_Historico_Precos(
@@ -106,8 +104,7 @@ def portalCompras():
 										)
 										newPrecoMaterial.save()
 									except IntegrityError: continue
-									except:
-										return False
+
 							print("Finished page at:", datetime.now())
 					licitacoesDescartadas.append(licitacao['identificador'])
 		return True

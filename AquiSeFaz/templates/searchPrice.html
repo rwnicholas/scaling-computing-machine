@@ -20,6 +20,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Product description</th>
+                <th scope="col">Unit</th>
                 <th scope="col">Source</th>
                 <th scope="col">Price (R$)</th>
             </tr>
@@ -30,8 +31,9 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ keySinapi }}</td>
+                    <td>{{ materialSinapi.1 }}</td>
                     <td>SINAPI</td>
-                    <td>R$ {{ materialSinapi.preco }}</td>
+                    <td>R$ {{ materialSinapi.0.preco }}</td>
                 </tr>
             {% endfor %}
 
@@ -39,6 +41,7 @@
                 <tr>
                     <th scope="row">{{ forloop.counter|add:countSinapi }}</th>
                     <td>{{ keyEcoAL }}</td>
+                    <td>#</td>
                     <td>Economiza Alagoas</td>
                     <td>R$ {{ materialEcoAL.preco }}</td>
                 </tr>
@@ -48,8 +51,9 @@
                 <tr>
                     <th scope="row">{{ forloop.counter|add:countSinapi|add:countEcoAL }}</th>
                     <td>{{ keyComprasGov }}</td>
+                    <td>{{ materialComprasGov.1 }}</td>
                     <td>Portal de Compras Governamentais</td>
-                    <td>R$ {{ materialComprasGov.preco }}</td>
+                    <td>R$ {{ materialComprasGov.0.preco }}</td>
                 </tr>
             {% endfor %}
         </tbody>
