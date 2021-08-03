@@ -48,7 +48,7 @@ def searchPriceBase(searchTerm):
     for material in comprasGovMateriais:
         comprasGovDict[material.descricao] = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
         comprasGovDict[material.descricao] = comprasGovDict[material.descricao][0]
-        comprasGovDict[material.descricao] = [comprasGovDict[material.nome], material.unidade]
+        comprasGovDict[material.descricao] = [comprasGovDict[material.descricao], material.unidade]
     OutputDict['comprasGov'] = comprasGovDict
 
     if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
