@@ -11,7 +11,33 @@
             <div class="form-group mx-sm-3">
                 <input type="text" name="searchTerm" placeholder="Search Term" class="form-control">
             </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="economizaAL" value="ecoal" name="bases" checked>
+                <label class="form-check-label" for="economizaAL">Economiza Alagoas</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="sinapi" value="sinapi" name="bases">
+                <label class="form-check-label" for="sinapi">SINAPI</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="portalGov" value="portalGov" name="bases">
+                <label class="form-check-label" for="portalGov">Portal de Compras Governamentais</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="carajas" value="carajas" name="bases">
+                <label class="form-check-label" for="carajas">Carajás</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="leroy" value="leroy" name="bases">
+                <label class="form-check-label" for="leroy">Leroy Merlin</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="tupan" value="tupan" name="bases">
+                <label class="form-check-label" for="tupan">Tupan</label>
+            </div>
+            <div class="py-2">
                 <button type="submit" class="btn btn-primary">Search</button>
+            </div>
         </form>
     </div>
     <div class="container-fluid">
@@ -54,6 +80,36 @@
                     <td>{{ materialComprasGov.1 }}</td>
                     <td>Portal de Compras Governamentais</td>
                     <td>R$ {{ materialComprasGov.0.preco }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for carajasProduct in carajas %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ carajasProduct.description }}</td>
+                    <td>#</td>
+                    <td>{{ carajasProduct.storeName }}</td>
+                    <td>{{ carajasProduct.price }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for tupanProduct in tupan %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ tupanProduct.description }}</td>
+                    <td>#</td>
+                    <td>{{ tupanProduct.storeName }}</td>
+                    <td>{{ tupanProduct.price }}</td>
+                </tr>
+            {% endfor %}
+
+            {% for leroyProduct in leroy %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ leroyProduct.description }}</td>
+                    <td>#</td>
+                    <td>{{ leroyProduct.storeName }}</td>
+                    <td>{{ leroyProduct.price }}</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -8,7 +8,7 @@ from rest_framework import status
 import EcoAL.models
 import sinapi.models
 import PortalComprasGov.models
-import json
+from web.views import getProductsInfo
 
 # Create your views here.
 
@@ -18,7 +18,7 @@ def retriveAPIs(request, context = {}):
 def index(request):
     return render(request, 'index.html')
 
-def searchPriceBase(searchTerm):
+def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapiCheck = True):
     OutputDict = {}
     sinapiDict = {}
     ecoalDict = {}
@@ -29,26 +29,26 @@ def searchPriceBase(searchTerm):
     comprasGovMateriais = PortalComprasGov.models.Material.objects.filter(descricao__istartswith=searchTerm)
 
     #### SINAPI
-    
-    for material in sinapiMateriais:
-        sinapiDict[material.nome] = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-        sinapiDict[material.nome] = sinapiDict[material.nome][0]
-        sinapiDict[material.nome]  = [sinapiDict[material.nome], material.unidade]
+    if sinapiCheck:
+        for material in sinapiMateriais:
+            sinapiDict[material.nome] = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
+            sinapiDict[material.nome] = sinapiDict[material.nome][0]
+            sinapiDict[material.nome]  = [sinapiDict[material.nome], material.unidade]
     OutputDict['SINAPI'] = sinapiDict
 
     #### Economiza Alagoas
-    
-    for material in ecoalMateriais:
-        ecoalDict[material.nome] = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-        ecoalDict[material.nome] = ecoalDict[material.nome][0]
+    if ecoalCheck:
+        for material in ecoalMateriais:
+            ecoalDict[material.nome] = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
+            ecoalDict[material.nome] = ecoalDict[material.nome][0]
     OutputDict['ecoAL'] = ecoalDict
     
     ### Portal de Compras Governamentais
-    
-    for material in comprasGovMateriais:
-        comprasGovDict[material.descricao] = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-        comprasGovDict[material.descricao] = comprasGovDict[material.descricao][0]
-        comprasGovDict[material.descricao] = [comprasGovDict[material.descricao], material.unidade]
+    if portalGovCheck:
+        for material in comprasGovMateriais:
+            comprasGovDict[material.descricao] = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
+            comprasGovDict[material.descricao] = comprasGovDict[material.descricao][0]
+            comprasGovDict[material.descricao] = [comprasGovDict[material.descricao], material.unidade]
     OutputDict['comprasGov'] = comprasGovDict
 
     if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
@@ -61,15 +61,33 @@ def searchPriceBase(searchTerm):
     
     return OutputDict
 
-def searchPrice(request):
+def selectBase(request):
     context = {}
     if 'searchTerm' in request.GET:
         if request.GET['searchTerm'] == None or request.GET['searchTerm'] == '':
-            print("Seligarapa")
+            raise ValueError
 
-        context = searchPriceBase(request.GET['searchTerm'])
+        basesList = request.GET.getlist('bases')
+
+        ecoalCheck = True if 'ecoal' in basesList else False
+        portalGovCheck = True if 'portalGov' in basesList else False
+        sinapiCheck = True if 'sinapi' in basesList else False
+        carajasCheck = True if 'carajas' in basesList else False
+        leroyCheck = True if 'leroy' in basesList else False
+        tupanCheck = True if 'tupan' in basesList else False
+
+        # ecoal, sinapi, portalGov, carajas, leroy, tupan
+        
+        if ecoalCheck or portalGovCheck or sinapiCheck:
+            context.update(searchPriceGov(request.GET['searchTerm'], ecoalCheck, portalGovCheck, sinapiCheck))
+        
+        if carajasCheck or leroyCheck or tupanCheck:
+            context.update(getProductsInfo(request.GET['searchTerm'], carajasCheck, leroyCheck, tupanCheck))
 
     return render(request, 'searchPrice.html', context)
+
+def searchPriceGov(searchTerm, ecoalCheck, portalGovCheck, sinapiCheck):
+    return searchPriceBase(searchTerm, ecoalCheck, portalGovCheck, sinapiCheck)
 
 @api_view(['GET'])
 def searchPriceAPI(request):

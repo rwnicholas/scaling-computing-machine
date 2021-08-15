@@ -29,7 +29,7 @@ urlpatterns = [
     # path('portalCompras/', urlPortalComprasGov.portalCompras, name='portalComprasGov'),
     path('', url.index, name='Index'),
     path('retriveAPIs/', url.retriveAPIs, name='retrieveInfoFromAPIs'),
-    path('search/', url.searchPrice, name='searchPrice'),
+    path('search/', url.selectBase, name='searchPrice'),
     path('search.json', url.searchPriceAPI, name='searchPriceAPI'),
     path('commercialPrices/', urlCommercialPrices.index, name='commercialPrices'),
     path('api/', include('API.urls'))
