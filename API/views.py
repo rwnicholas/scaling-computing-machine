@@ -11,6 +11,11 @@ class ProductAPIView(APIView):
     """
     def get(self,request,pk=None):
         if(pk!=None):
+            product = Product.objects.filter(id=pk)
+            if(not product.exists()):
+                data = {'has-product': False}
+                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+
             product = Product.objects.get(id=pk)
             serializer = ProductSerializer(product)
             return Response(serializer.data)
