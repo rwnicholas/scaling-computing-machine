@@ -20,7 +20,7 @@ import EcoAL.views as urlEcoAL
 import PortalComprasGov.views as urlPortalComprasGov
 import AquiSeFaz.views as url
 import web.views as urlCommercialPrices
-# from API.urls import urlpatterns as apiCommercialUrl
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,10 +29,8 @@ urlpatterns = [
     # path('portalCompras/', urlPortalComprasGov.portalCompras, name='portalComprasGov'),
     path('', url.selectBase, name='searchPrice'),
     path('retriveAPIs/', url.retriveAPIs, name='retrieveInfoFromAPIs'),
-    # path('search/', url.selectBase, name='searchPrice'),
+    # path('novoTema/', url.index, name='novoTema'),
     path('search.json', url.searchPriceAPI, name='searchPriceAPI'),
     path('commercialPrices/', urlCommercialPrices.index, name='commercialPrices'),
     path('api/', include('API.urls'))
 ]
-
-# urlpatterns+=apiCommercialUrl

@@ -5,20 +5,42 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    {% bootstrap_css %}
-    {% bootstrap_javascript jquery='full' %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     {%block imports %} {% endblock %}
 
   </head>
-  <body>
-        <nav class="site-header sticky-top py-1 bg-dark link-light">
-            <div class="container d-flex flex-column flex-md-row justify-content-between">
-              <a class="py-2" href="https://dev.laccan.ufal.br/laccan/product-catalog/aquisefaz/wikis/home">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="d-block mx-auto text-white"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
-              </a>
-              <a class="py-2 d-none d-md-inline-block text-white" href="{% url 'searchPrice' %}">Index</a>
-            </div>
+  <body class="flex-container">
+        <nav class="site-header">
+          <a href="https://dev.laccan.ufal.br/laccan/product-catalog/aquisefaz/wikis/home"><img src="{% static 'images/Laccan-apresentao---verso-bran.png' %}"></a>
+            <form action="{% url 'searchPrice' %}" class="boxSearch" method="GET">
+              <div class="search">
+                <button type="submit"><img src="{% static 'images/Ativo_10.png' %}" alt="Go"></button>
+                <input type="text" name="searchTerm" id="" placeholder="Pesquisar">
+              </div>
+
+              <div class="checkSearch">
+                <input type="checkbox" id="economizaAL" value="ecoal" name="bases" checked>
+                <label for="economizaAL">Economiza Alagoas</label>
+
+                <input type="checkbox" id="sinapi" value="sinapi" name="bases">
+                <label for="sinapi">SINAPI</label>
+
+                <input type="checkbox" id="portalGov" value="portalGov" name="bases">
+                <label for="portalGov">Portal de Compras Governamentais</label>
+
+                <input type="checkbox" id="carajas" value="carajas" name="bases">
+                <label for="carajas">Carajás</label>
+
+                <input type="checkbox" id="leroy" value="leroy" name="bases">
+                <label for="leroy">Leroy Merlin</label>
+
+                <input type="checkbox" id="tupan" value="tupan" name="bases">
+                <label for="tupan">Tupan</label>
+              </div>
+            </form>
+          <img src="{% static 'images/Ativo_15.png' %}" height="25%" style="margin-top: 1.5%;">
         </nav>
 
         {% block content %} {% endblock %}
