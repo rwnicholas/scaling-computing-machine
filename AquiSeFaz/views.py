@@ -34,20 +34,20 @@ def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapi
     #### SINAPI
     if sinapiCheck:
         for material in sinapiMateriais:
-            queryset = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            queryset = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
             queryset
             OutputDict['produtos'].append((material, queryset))
 
     #### Economiza Alagoas
     if ecoalCheck:
         for material in ecoalMateriais:
-            queryset = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            queryset = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
             OutputDict['produtos'].append((material, queryset))
     
     ### Portal de Compras Governamentais
     if portalGovCheck:
         for material in comprasGovMateriais:
-            queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
             OutputDict['produtos'].append((material, queryset))
 
     # if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
