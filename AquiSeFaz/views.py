@@ -9,6 +9,7 @@ import EcoAL.models
 import sinapi.models
 import PortalComprasGov.models
 from web.views import getProductsInfo
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -19,36 +20,38 @@ def index(request):
     return render(request, 'index.html')
 
 def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapiCheck = True):
-    OutputDict = {}
-    OutputDict['produtos'] = []
+    products = []
 
-    ecoalMateriais = EcoAL.models.Material.objects.filter(description__istartswith=searchTerm)
-    sinapiMateriais = sinapi.models.Material.objects.filter(description__istartswith=searchTerm)
-    comprasGovMateriais = PortalComprasGov.models.Material.objects.filter(description__istartswith=searchTerm)
 
     #### SINAPI
     if sinapiCheck:
+        sinapiMateriais = sinapi.models.Material.objects.filter(description__istartswith=searchTerm)
         for material in sinapiMateriais:
-            queryset = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
-            queryset
-            OutputDict['produtos'].append((material, queryset))
+            queryset = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()
+            material.storeName = "SINAPI"
+            products.append((material, queryset[0]))
 
     #### Economiza Alagoas
     if ecoalCheck:
+        ecoalMateriais = EcoAL.models.Material.objects.filter(description__istartswith=searchTerm)
         for material in ecoalMateriais:
-            queryset = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
-            OutputDict['produtos'].append((material, queryset))
+            queryset = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()
+            material.storeName = "Economiza Alagoas"
+            products.append((material, queryset[0]))
     
     ### Portal de Compras Governamentais
     if portalGovCheck:
+        comprasGovMateriais = PortalComprasGov.models.Material.objects.filter(description__istartswith=searchTerm)
         for material in comprasGovMateriais:
-            queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
-            OutputDict['produtos'].append((material, queryset))
+            queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()
+            material.storeName = "Portal de Compras Governamentais"
+            products.append((material, queryset[0]))
     
-    return OutputDict
+    return products
 
-def selectBase(request):
-    context = {}
+def selectBase(request, context = {}):
+    products = []
+
     if 'searchTerm' in request.GET:
         if request.GET['searchTerm'] == None or request.GET['searchTerm'] == '':
             raise ValueError
@@ -65,10 +68,20 @@ def selectBase(request):
         # ecoal, sinapi, portalGov, carajas, leroy, tupan
         
         if ecoalCheck or portalGovCheck or sinapiCheck:
-            context.update(searchPriceGov(request.GET['searchTerm'], ecoalCheck, portalGovCheck, sinapiCheck))
+            products+= searchPriceGov(request.GET['searchTerm'], ecoalCheck, portalGovCheck, sinapiCheck)
         
         if carajasCheck or leroyCheck or tupanCheck:
-            context.update(getProductsInfo(request.GET['searchTerm'], carajasCheck, leroyCheck, tupanCheck))
+            products+= getProductsInfo(request.GET['searchTerm'], carajasCheck, leroyCheck, tupanCheck)
+
+        paginator = Paginator(products, 10)
+        page_number = request.GET.get('page', 1)
+        context['products'] = paginator.get_page(page_number)
+
+        queries_without_page = request.GET.copy()
+        if 'page' in queries_without_page:
+            del queries_without_page['page']
+
+        context['queries'] = queries_without_page
 
     return render(request, 'searchPrice.html', context)
 

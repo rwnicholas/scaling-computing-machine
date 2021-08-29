@@ -71,17 +71,24 @@ def index(request):
     return render(request, 'indexCommercial.html', context)
 
 def getProductsInfo(searchTerm, carajasCheck = True, leroyCheck = True, tupanCheck = True):
-    allProducts = {}
+    products = []
+
     if carajasCheck:
-        allProducts['carajas'] = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Carajás")
+        carajasMaterials = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Carajás")
+        for material in carajasMaterials:
+            products.append((material, {'price': material.price}))
     
     if leroyCheck:
-        allProducts['leroy'] = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Leroy Merlin")
+        leroyMaterials = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Leroy Merlin")
+        for material in leroyMaterials:
+            products.append((material, {'price': material.price}))
     
     if tupanCheck:
-        allProducts['tupan'] = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Tupan")
-    
-    return allProducts
+        tupanMaterials = Product.objects.filter(description__icontains=searchTerm, storeName__icontains="Tupan")
+        for material in tupanMaterials:
+            products.append((material, {'price': material.price}))
+
+    return products
 
 def root(request):
     return render(request, 'root.html')
