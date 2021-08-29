@@ -19,13 +19,8 @@ def index(request):
     return render(request, 'index.html')
 
 def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapiCheck = True):
-    # OutputList = []
     OutputDict = {}
     OutputDict['produtos'] = []
-    sinapiDict = {}
-    sinapiList = []
-    ecoalDict = {}
-    comprasGovDict = {}
 
     ecoalMateriais = EcoAL.models.Material.objects.filter(description__istartswith=searchTerm)
     sinapiMateriais = sinapi.models.Material.objects.filter(description__istartswith=searchTerm)
@@ -49,14 +44,6 @@ def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapi
         for material in comprasGovMateriais:
             queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-date')[:1].values()[0]
             OutputDict['produtos'].append((material, queryset))
-
-    # if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
-    #     OutputDict['status'] = False
-    #     print("SorryMan")
-    # else:
-    #     OutputDict['countSinapi'] = len(OutputDict['SINAPI'])
-    #     OutputDict['countEcoAL'] = len(OutputDict['ecoAL'])
-    #     OutputDict['countComprasGov'] = len(OutputDict['comprasGov'])
     
     return OutputDict
 
@@ -92,10 +79,6 @@ def searchPriceGov(searchTerm, ecoalCheck, portalGovCheck, sinapiCheck):
 def searchPriceAPI(request):
     if 'searchTerm' in request.GET and request.GET['searchTerm'] != None and request.GET['searchTerm'].strip() != '':
         returnedData = searchPriceBase(request.GET['searchTerm'])
-
-        returnedData.pop('countSinapi', None)
-        returnedData.pop('countEcoAL', None)
-        returnedData.pop('countComprasGov', None)
 
         return Response(data=returnedData,status=status.HTTP_200_OK)
  
