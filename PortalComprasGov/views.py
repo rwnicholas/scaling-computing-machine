@@ -39,15 +39,15 @@ def portalCompras():
 			materiais = list(materiais.values())
 			for material in materiais[0]:
 				#Material_Codigo
-				codigoMateriais.append((material['codigo'], material['descricao']))
+				codigoMateriais.append((material['cod'], material['descricao']))
 		
 		licitacoesDescartadas = []
 
 		#Licitações
-		for codigo,descricaoMaterial in codigoMateriais:
+		for cod,descricaoMaterial in codigoMateriais:
 			pagesLicitacoes = navigatePages("http://compras.dados.gov.br/licitacoes/v1/licitacoes.json",
 					{
-						"item_material": codigo,
+						"item_material": cod,
 						"data_publicacao_min": "2019-01-01"
 					}
 			)
@@ -57,16 +57,16 @@ def portalCompras():
 				licitacoes = list(licitacoes.values())
 				
 				# A API retorna licitações duplicadas
-				for licitacao in licitacoes[0]:
-					if licitacao['identificador'] in licitacoesDescartadas:
+				for bidding in licitacoes[0]:
+					if bidding['identificador'] in licitacoesDescartadas:
 						continue
 					
 
-					itensPages = navigatePages("http://compras.dados.gov.br/licitacoes/doc/licitacao/" + licitacao['identificador'] + "/itens.json",
+					itensPages = navigatePages("http://compras.dados.gov.br/licitacoes/doc/bidding/" + bidding['identificador'] + "/itens.json",
 							{}
 					)
 
-					print(licitacao['identificador'])
+					print(bidding['identificador'])
 					
 					for cod,DescMat in codigoMateriais:
 						for pageItem in itensPages:
@@ -80,8 +80,8 @@ def portalCompras():
 									print(item['numero_licitacao'], item['codigo_item_material'], DescMat, (float(item['valor_estimado'])/float(item['quantidade'])))
 									try:
 										newGrupo,created = GrupoMaterial.objects.get_or_create(
-											codigo=item['codigo_item_material'],
-											descricao=DescMat,
+											cod=item['codigo_item_material'],
+											description=DescMat,
 										)
 									except IntegrityError: continue
 
@@ -89,9 +89,9 @@ def portalCompras():
 									try:
 										newMaterial,created = Material.objects.get_or_create(
 											idGrupo=newGrupo,
-											descricao=item['descricao_item'],
-											licitacao=item['numero_licitacao'],
-											unidade=item['unidade']
+											description=item['descricao_item'],
+											bidding=item['numero_licitacao'],
+											unit=item['unit']
 										)
 									except IntegrityError: continue
 
@@ -99,14 +99,14 @@ def portalCompras():
 									try:
 										newPrecoMaterial = Material_Historico_Precos(
 											idMaterial=newMaterial,
-											preco=(float(item['valor_estimado'])/float(item['quantidade'])),
-											data=licitacao['data_publicacao']
+											price=(float(item['valor_estimado'])/float(item['quantidade'])),
+											date=bidding['data_publicacao']
 										)
 										newPrecoMaterial.save()
 									except IntegrityError: continue
 
 							print("Finished page at:", datetime.now())
-					licitacoesDescartadas.append(licitacao['identificador'])
+					licitacoesDescartadas.append(bidding['identificador'])
 		return True
 	except:
 		return False

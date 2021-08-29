@@ -5,5 +5,5 @@ class sinapi_MaterialForm(ModelForm):
     class Meta:
         model = sinapi_Material
         fields = [
-            'codigo', 'nome', 'unidade', 'preco', 'data'
+            'cod', 'description', 'unit', 'price', 'date'
         ]

@@ -5,5 +5,5 @@ class ecoal_MaterialForm(ModelForm):
     class Meta:
         model = ecoal_Material
         fields = [
-            'codigoSinapi', 'ncm', 'nome', 'preco', 'data'
+            'codSinapi', 'ncm', 'description', 'price', 'date'
         ]

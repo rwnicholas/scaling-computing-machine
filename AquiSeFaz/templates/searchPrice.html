@@ -5,115 +5,80 @@
 {% endblock %}
 
 {% block content %}
-    <div class="jumbotron text-center">
-        <h1>Product Catalog</h1>
-        <form action="{% url 'searchPrice' %}" method="get">
-            <div class="form-group mx-sm-3">
-                <input type="text" name="searchTerm" placeholder="Search Term" class="form-control">
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="economizaAL" value="ecoal" name="bases" checked>
-                <label class="form-check-label" for="economizaAL">Economiza Alagoas</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="sinapi" value="sinapi" name="bases">
-                <label class="form-check-label" for="sinapi">SINAPI</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="portalGov" value="portalGov" name="bases">
-                <label class="form-check-label" for="portalGov">Portal de Compras Governamentais</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="carajas" value="carajas" name="bases">
-                <label class="form-check-label" for="carajas">Carajás</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="leroy" value="leroy" name="bases">
-                <label class="form-check-label" for="leroy">Leroy Merlin</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="tupan" value="tupan" name="bases">
-                <label class="form-check-label" for="tupan">Tupan</label>
-            </div>
-            <div class="py-2">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
-    </div>
-    <div class="container-fluid">
-    <table class="table table-dark">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Product description</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Source</th>
-                <th scope="col">Price (R$)</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            {% for keySinapi, materialSinapi in SINAPI.items %}
+    <div class="tableArea">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ keySinapi }}</td>
-                    <td>{{ materialSinapi.1 }}</td>
-                    <td>SINAPI</td>
-                    <td>R$ {{ materialSinapi.0.preco }}</td>
+                    <th scope="col">#</th>
+                    <th scope="col">Product description</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Price (R$)</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
 
-            {% for keyEcoAL, materialEcoAL in ecoAL.items %}
-                <tr>
-                    <th scope="row">{{ forloop.counter|add:countSinapi }}</th>
-                    <td>{{ keyEcoAL }}</td>
-                    <td>#</td>
-                    <td>Economiza Alagoas</td>
-                    <td>R$ {{ materialEcoAL.preco }}</td>
-                </tr>
-            {% endfor %}
+                {% for produto in produtos %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ produto.0.description }}</td>
+                        <td>{{ produto.0.unit }} </td>
+                        <td>SINAPI</td>
+                        <td>R$ {{ produto.1.price }}</td>
+                    </tr>
+                {% endfor %}
 
-            {% for keyComprasGov, materialComprasGov in comprasGov.items %}
-                <tr>
-                    <th scope="row">{{ forloop.counter|add:countSinapi|add:countEcoAL }}</th>
-                    <td>{{ keyComprasGov }}</td>
-                    <td>{{ materialComprasGov.1 }}</td>
-                    <td>Portal de Compras Governamentais</td>
-                    <td>R$ {{ materialComprasGov.0.preco }}</td>
-                </tr>
-            {% endfor %}
+                {% for keyEcoAL, materialEcoAL in ecoAL.items %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter|add:countSinapi }}</th>
+                        <td>{{ keyEcoAL }}</td>
+                        <td>#</td>
+                        <td>Economiza Alagoas</td>
+                        <td>R$ {{ materialEcoAL.price }}</td>
+                    </tr>
+                {% endfor %}
 
-            {% for carajasProduct in carajas %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ carajasProduct.description }}</td>
-                    <td>#</td>
-                    <td>{{ carajasProduct.storeName }}</td>
-                    <td>{{ carajasProduct.price }}</td>
-                </tr>
-            {% endfor %}
+                {% for keyComprasGov, materialComprasGov in comprasGov.items %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter|add:countSinapi|add:countEcoAL }}</th>
+                        <td>{{ keyComprasGov }}</td>
+                        <td>{{ materialComprasGov.1 }}</td>
+                        <td>Portal de Compras Governamentais</td>
+                        <td>R$ {{ materialComprasGov.0.price }}</td>
+                    </tr>
+                {% endfor %}
 
-            {% for tupanProduct in tupan %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ tupanProduct.description }}</td>
-                    <td>#</td>
-                    <td>{{ tupanProduct.storeName }}</td>
-                    <td>{{ tupanProduct.price }}</td>
-                </tr>
-            {% endfor %}
+                {% for carajasProduct in carajas %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ carajasProduct.description }}</td>
+                        <td>#</td>
+                        <td>{{ carajasProduct.storeName }}</td>
+                        <td>{{ carajasProduct.price }}</td>
+                    </tr>
+                {% endfor %}
 
-            {% for leroyProduct in leroy %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ leroyProduct.description }}</td>
-                    <td>#</td>
-                    <td>{{ leroyProduct.storeName }}</td>
-                    <td>{{ leroyProduct.price }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                {% for tupanProduct in tupan %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ tupanProduct.description }}</td>
+                        <td>#</td>
+                        <td>{{ tupanProduct.storeName }}</td>
+                        <td>{{ tupanProduct.price }}</td>
+                    </tr>
+                {% endfor %}
+
+                {% for leroyProduct in leroy %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ leroyProduct.description }}</td>
+                        <td>#</td>
+                        <td>{{ leroyProduct.storeName }}</td>
+                        <td>{{ leroyProduct.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <!-- <div class="pagination">
         <span class="step-links">

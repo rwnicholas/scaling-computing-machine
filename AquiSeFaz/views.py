@@ -19,45 +19,44 @@ def index(request):
     return render(request, 'index.html')
 
 def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapiCheck = True):
+    # OutputList = []
     OutputDict = {}
+    OutputDict['produtos'] = []
     sinapiDict = {}
+    sinapiList = []
     ecoalDict = {}
     comprasGovDict = {}
 
-    ecoalMateriais = EcoAL.models.Material.objects.filter(nome__istartswith=searchTerm)
-    sinapiMateriais = sinapi.models.Material.objects.filter(nome__istartswith=searchTerm)
-    comprasGovMateriais = PortalComprasGov.models.Material.objects.filter(descricao__istartswith=searchTerm)
+    ecoalMateriais = EcoAL.models.Material.objects.filter(description__istartswith=searchTerm)
+    sinapiMateriais = sinapi.models.Material.objects.filter(description__istartswith=searchTerm)
+    comprasGovMateriais = PortalComprasGov.models.Material.objects.filter(description__istartswith=searchTerm)
 
     #### SINAPI
     if sinapiCheck:
         for material in sinapiMateriais:
-            sinapiDict[material.nome] = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-            sinapiDict[material.nome] = sinapiDict[material.nome][0]
-            sinapiDict[material.nome]  = [sinapiDict[material.nome], material.unidade]
-    OutputDict['SINAPI'] = sinapiDict
+            queryset = sinapi.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            queryset
+            OutputDict['produtos'].append((material, queryset))
 
     #### Economiza Alagoas
     if ecoalCheck:
         for material in ecoalMateriais:
-            ecoalDict[material.nome] = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-            ecoalDict[material.nome] = ecoalDict[material.nome][0]
-    OutputDict['ecoAL'] = ecoalDict
+            queryset = EcoAL.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            OutputDict['produtos'].append((material, queryset))
     
     ### Portal de Compras Governamentais
     if portalGovCheck:
         for material in comprasGovMateriais:
-            comprasGovDict[material.descricao] = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()
-            comprasGovDict[material.descricao] = comprasGovDict[material.descricao][0]
-            comprasGovDict[material.descricao] = [comprasGovDict[material.descricao], material.unidade]
-    OutputDict['comprasGov'] = comprasGovDict
+            queryset = PortalComprasGov.models.Material_Historico_Precos.objects.filter(idMaterial=material.id).order_by('-data')[:1].values()[0]
+            OutputDict['produtos'].append((material, queryset))
 
-    if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
-        OutputDict['status'] = False
-        print("SorryMan")
-    else:
-        OutputDict['countSinapi'] = len(OutputDict['SINAPI'])
-        OutputDict['countEcoAL'] = len(OutputDict['ecoAL'])
-        OutputDict['countComprasGov'] = len(OutputDict['comprasGov'])
+    # if (len(OutputDict['SINAPI']) == 0) and (len(OutputDict['ecoAL']) == 0) and (len(OutputDict['comprasGov']) == 0):
+    #     OutputDict['status'] = False
+    #     print("SorryMan")
+    # else:
+    #     OutputDict['countSinapi'] = len(OutputDict['SINAPI'])
+    #     OutputDict['countEcoAL'] = len(OutputDict['ecoAL'])
+    #     OutputDict['countComprasGov'] = len(OutputDict['comprasGov'])
     
     return OutputDict
 

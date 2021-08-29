@@ -30,13 +30,13 @@ def main():
 		materiais = list(materiais.values())
 		for material in materiais[0]:
 			#Material_Codigo
-			codigoMateriais.append(material['codigo'])
+			codigoMateriais.append(material['cod'])
 	
 	#Licitações
-	for codigo in codigoMateriais:
+	for cod in codigoMateriais:
 		pagesLicitacoes = navigatePages("http://compras.dados.gov.br/licitacoes/v1/licitacoes.json",
 			    {
-			        "item_material": codigo,
+			        "item_material": cod,
 					"data_publicacao_min": "2015-01-01"
 			    }
 		)
@@ -46,9 +46,9 @@ def main():
 			licitacoes = list(licitacoes.values())
 
 			# A API retorna licitações duplicadas
-			for licitacao in licitacoes[0]:
+			for bidding in licitacoes[0]:
 
-				itensPages = navigatePages("http://compras.dados.gov.br/licitacoes/doc/licitacao/" + licitacao['identificador'] + "/itens.json",
+				itensPages = navigatePages("http://compras.dados.gov.br/licitacoes/doc/bidding/" + bidding['identificador'] + "/itens.json",
 						{}
 				)
 
@@ -56,8 +56,8 @@ def main():
 					itens = pageItem['_embedded']
 					itens = list(itens.values())
 					for item in itens[0]:
-						if codigo == item['codigo_item_material']:
-							print(licitacao['identificador'], ": ", item['descricao_item'])
+						if cod == item['codigo_item_material']:
+							print(bidding['identificador'], ": ", item['descricao_item'])
 
 
 main()

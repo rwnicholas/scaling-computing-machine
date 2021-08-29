@@ -18,15 +18,15 @@ def sinapi():
             row[1]['PRECO MEDIANO R$'] = row[1]['PRECO MEDIANO R$'].replace(',', '.')
             try:
                 newMaterial,created = Material.objects.get_or_create(
-                    codigo=row[1]['CODIGO'],
-                    nome=row[1]['DESCRICAO DO INSUMO'],
-                    unidade=row[1]['UNIDADE']
+                    cod=row[1]['CODIGO'],
+                    description=row[1]['DESCRICAO DO INSUMO'],
+                    unit=row[1]['UNIDADE']
                 )
             except IntegrityError: continue
             
             newPrecoMaterial = Material_Historico_Precos(
-                idMaterial=newMaterial, preco=row[1]['PRECO MEDIANO R$'],
-                data=row[1]['DATA']
+                idMaterial=newMaterial, price=row[1]['PRECO MEDIANO R$'],
+                date=row[1]['DATA']
             )
             try:
                 newPrecoMaterial.save()

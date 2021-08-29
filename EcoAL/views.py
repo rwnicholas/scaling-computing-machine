@@ -14,13 +14,13 @@ def ecoal():
     try:
         print("Atualizando Economiza Alagoas")
         base = NCM(None)
-        base.data = pd.DataFrame(list(sinapi_Material.objects.all().values('codigo', 'nome')))
-        base.generalizeString(column='nome')
+        base.data = pd.DataFrame(list(sinapi_Material.objects.all().values('cod', 'description')))
+        base.generalizeString(column='description')
         knn = KNN('classifier/train_NCM.csv', 6)
 
-        #codigoSinapi, ncm, nome, preco
+        #codSinapi, ncm, description, price
         for row in base.data.iterrows():
-            termo = row[1]['nome']
+            termo = row[1]['description']
             r = RequestSEFAZ()
             ecoData = r.request(term=termo)
 
@@ -28,10 +28,10 @@ def ecoal():
                 if (knn.classifier(int(dictionary['codNcm'])) == "MATERIAIS DE CONSTRUCAO"):
                     try:
                         newMaterial,created = Material.objects.get_or_create(
-                            codigoSinapi=row[1]['codigo'],
+                            codSinapi=row[1]['cod'],
                             codGetin=dictionary['codGetin'],
                             ncm=dictionary['codNcm'],
-                            nome=dictionary['dscProduto']
+                            description=dictionary['dscProduto']
                         )
                     except IntegrityError: continue
                     except:
@@ -40,7 +40,7 @@ def ecoal():
                     try:
                         newMaterialPreco = Material_Historico_Precos(
                             idMaterial=newMaterial,
-                            preco=dictionary['valUnitarioUltimaVenda']
+                            price=dictionary['valUnitarioUltimaVenda']
                         )
 
                         newMaterialPreco.save()
