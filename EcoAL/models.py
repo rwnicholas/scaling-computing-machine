@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Material(models.Model):
     codSinapi = models.IntegerField()
-    codGetin = models.CharField(max_length=255)
+    codGtin = models.CharField(max_length=255)
     ncm = models.CharField(max_length=255)
     description = models.CharField(max_length=255, unique=True)
 

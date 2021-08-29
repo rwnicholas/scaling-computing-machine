@@ -29,7 +29,7 @@ def ecoal():
                     try:
                         newMaterial,created = Material.objects.get_or_create(
                             codSinapi=row[1]['cod'],
-                            codGetin=dictionary['codGetin'],
+                            codGtin=dictionary['codGetin'],
                             ncm=dictionary['codNcm'],
                             description=dictionary['dscProduto']
                         )
