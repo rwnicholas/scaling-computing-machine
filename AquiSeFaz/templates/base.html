@@ -40,9 +40,11 @@
                 <label for="tupan">Tupan</label>
               </div>
             </form>
-          <img src="{% static 'images/Ativo_15.png' %}" height="25%" style="margin-top: 1.5%;">
+          <img src="{% static 'images/Ativo_15.png' %}" height="25%">
         </nav>
+        <div class="content">
+          {% block content %} {% endblock %}
+        </div>
 
-        {% block content %} {% endblock %}
   </body>
 </html>

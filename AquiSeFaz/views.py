@@ -49,7 +49,8 @@ def searchPriceBase(searchTerm, ecoalCheck = True, portalGovCheck = True, sinapi
     
     return products
 
-def selectBase(request, context = {}):
+def selectBase(request):
+    context = {}
     products = []
 
     if 'searchTerm' in request.GET:
@@ -76,7 +77,10 @@ def selectBase(request, context = {}):
         qtdByPage = request.GET.get('qtdByPage', 10)
         paginator = Paginator(products, qtdByPage)
         page_number = request.GET.get('page', 1)
+
         context['products'] = paginator.get_page(page_number)
+        context['page_range'] = paginator.get_elided_page_range(number=page_number, on_each_side=4, on_ends=1)
+        context['countProducts'] = len(products)
 
         queries_without_page = request.GET.copy()
         if 'page' in queries_without_page:

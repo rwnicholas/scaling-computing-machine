@@ -40,26 +40,24 @@
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <button onclick="addQtdByPage()" class="button">&nbsp;Ir&nbsp;</button>
+                <button onclick="addQtdByPage()" class="button">Ir</button>
                 <a href="" hidden id="goHref"></a>
             </div>
-
-            <span class="step-links">
-                {% if products.has_previous %}
-                    <a href="?{{queries.urlencode}}&amp;page=1">&laquo; first</a>
-                    <a href="?{{queries.urlencode}}&amp;page={{ products.previous_page_number }}">previous</a>
-                {% endif %}
-        
-                <span class="current">
-                    Page {{ products.number }} of {{ products.paginator.num_pages }}.
-                </span>
-        
-                {% if products.has_next %}
-                    <a href="?{{queries.urlencode}}&amp;page={{ products.next_page_number }}">next</a>
-                    <a href="?{{queries.urlencode}}&amp;page={{ products.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
+            <div class="step-links">
+                {% for i in page_range|default_if_none:products.paginator.get_elided_page_range %}
+                    {% if products.number == i %}
+                        <a class="buttonStep buttonlink active_buttonlink" href="">{{ i }}</a>
+                    {% else %}
+                        {% if i == products.paginator.ELLIPSIS %}
+                            <a class="buttonStep buttonlink" href="">{{ i }}</a>
+                        {% else %}
+                            <a class="buttonStep buttonlink" href="?{{queries.urlencode}}&amp;page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
+        <label class="countProducts">{{ countProducts }} produtos</label>
     </div>
     <script>
         function addQtdByPage() {

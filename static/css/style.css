@@ -1,9 +1,13 @@
+@font-face {
+    font-family: Bahnschrift;
+    src: url('/static/font/BAHNSCHRIFT.TTF');
+}
+
 .flex-container {
     /* display: flex; */
     background: #FFFFFF 0% 0% no-repeat padding-box;
     opacity: 1;
-    font-family: Roboto;
-	font-style: normal;
+    font: normal normal 400 16px/20px Bahnschrift;
 	/* font-weight: bold;
 	font-size: 15px; */
 }
@@ -11,7 +15,7 @@
 .site-header {
     display: flex;
     justify-content: space-around;
-    height: 73px;
+    align-items: center;
     background: #FCFCFC 0% 0% no-repeat padding-box;
     box-shadow: 0px 24px 59px #333B4526;
     border-radius: 0px 0px 20px 20px;
@@ -51,6 +55,10 @@
     /* box-shadow: 0px 3px 6px #00000029; */
     border-radius: 43px;
     border: none;
+    text-align: left;
+    font: normal normal 400 24px/34px Bahnschrift;
+    letter-spacing: 0.48px;
+    /* color: #A7A7A7; */
     opacity: 1;
 }
 
@@ -60,9 +68,16 @@
 }
 
 .checkSearch {
-    height: 40%;
+    margin-top: 10px;
+    margin-bottom: 10px;
     align-self: flex-end;
-    overflow: hidden;
+    /* overflow: hidden; */
+}
+
+.content {
+    width: 100%;
+    background: transparent url('/static/images/triangulos.png') no-repeat padding-box;
+    background-position: -80px -1px;
 }
 
 .tableArea {
@@ -73,16 +88,9 @@
 
 .pagination {
     display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
-
-/* body {
-    background: transparent url('/static/images/triangulos.png') no-repeat padding-box;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: 1000px;
-    
-} */
 
 .table {
     border-collapse: collapse;
@@ -95,6 +103,9 @@
     color: white;
     background-color: #222C40;
     height: 83px;
+    font: normal normal bold 15px/21px Bahnschrift;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
 .table thead th:first-child{
@@ -111,6 +122,14 @@
     border-color: #C9D1D8;
     border-width: 0 0 1px 0 ;
     text-align: center;
+    font: normal normal 400 19px/20px Bahnschrift;
+    letter-spacing: 0.38px;
+    color: #222C40;
+}
+
+.table tbody td {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .table td:nth-child(n+2) {
@@ -135,12 +154,14 @@
     opacity: 1;
     text-align-last: right;
     width: 150px;
-    font: normal normal bold 24px/34px roboto;
+    font: normal normal 400 24px/34px Bahnschrift;
     letter-spacing: 0.48px;
+    color: #959595;
 }
+
 .button {
     text-align: center;
-    font: normal normal bold 24px/34px roboto;
+    font: normal normal bold 24px/34px Bahnschrift;
     letter-spacing: 0.48px;
     color: #FFFFFF;
     text-transform: uppercase;
@@ -148,5 +169,54 @@
     border: none;
     border-radius: 30px;
     opacity: 1;
-    /* width: 5%; */
+    padding: 0px 20px 0px 20px;
+}
+
+a.buttonStep {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    
+}
+
+.buttonlink {
+    background: #C7C7C7D9 0% 0% no-repeat padding-box;
+    padding: 0px 10px 0px 10px;
+    text-align: center;
+    font: normal normal normal 33px/47px Bahnschrift;
+    letter-spacing: 0.66px;
+    color: #354053;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+/* .step-links {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+.step-links .buttonlink:first-child {
+    border-radius: 0px 0px 0px 19px;
+    opacity: 1;
+}
+
+.step-links .buttonlink:last-child {
+    border-radius: 0px 0px 19px 0px;
+    opacity: 1;
+}
+
+.countProducts{
+    text-align: right;
+    font: normal normal 400 24px/34px Bahnschrift;
+    letter-spacing: 0.48px;
+    color: #959595;
+    opacity: 1;
+    text-transform: uppercase;
+    float: right;
+}
+
+.active_buttonlink{
+    background: #ECEBEBD9 0% 0% no-repeat padding-box;
 }
