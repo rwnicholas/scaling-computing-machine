@@ -73,7 +73,8 @@ def selectBase(request, context = {}):
         if carajasCheck or leroyCheck or tupanCheck:
             products+= getProductsInfo(request.GET['searchTerm'], carajasCheck, leroyCheck, tupanCheck)
 
-        paginator = Paginator(products, 10)
+        qtdByPage = request.GET.get('qtdByPage', 10)
+        paginator = Paginator(products, qtdByPage)
         page_number = request.GET.get('page', 1)
         context['products'] = paginator.get_page(page_number)
 

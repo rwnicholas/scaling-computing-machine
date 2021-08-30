@@ -65,10 +65,15 @@
     overflow: hidden;
 }
 
-/* .tableArea {
-    
-    
-} */
+.tableArea {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pagination {
+    display: flex;
+}
 
 /* body {
     background: transparent url('/static/images/triangulos.png') no-repeat padding-box;
@@ -80,9 +85,6 @@
 } */
 
 .table {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
     border-collapse: collapse;
     margin-top: 5%;
     background: #FFFFFF 0% 0% no-repeat padding-box;
@@ -125,4 +127,26 @@
 
 .table td:nth-child(n+5) {
     width: 20%;
+}
+.select {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #707070;
+    border-radius: 15px;
+    opacity: 1;
+    text-align-last: right;
+    width: 150px;
+    font: normal normal bold 24px/34px roboto;
+    letter-spacing: 0.48px;
+}
+.button {
+    text-align: center;
+    font: normal normal bold 24px/34px roboto;
+    letter-spacing: 0.48px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    background: #222C40 0% 0% no-repeat padding-box;
+    border: none;
+    border-radius: 30px;
+    opacity: 1;
+    /* width: 5%; */
 }

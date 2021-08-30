@@ -30,22 +30,48 @@
 
             </tbody>
         </table>
-    </div>
-    <div class="pagination">
-        <span class="step-links">
-            {% if products.has_previous %}
-                <a href="?{{queries.urlencode}}&amp;page=1">&laquo; first</a>
-                <a href="?{{queries.urlencode}}&amp;page={{ products.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ products.number }} of {{ products.paginator.num_pages }}.
+        <div class="pagination">
+            <div>
+                <select name="qtdByPage" class="select" id="qtdByPage">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <button onclick="addQtdByPage()" class="button">&nbsp;Ir&nbsp;</button>
+                <a href="" hidden id="goHref"></a>
+            </div>
+
+            <span class="step-links">
+                {% if products.has_previous %}
+                    <a href="?{{queries.urlencode}}&amp;page=1">&laquo; first</a>
+                    <a href="?{{queries.urlencode}}&amp;page={{ products.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                </span>
+        
+                {% if products.has_next %}
+                    <a href="?{{queries.urlencode}}&amp;page={{ products.next_page_number }}">next</a>
+                    <a href="?{{queries.urlencode}}&amp;page={{ products.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
             </span>
-    
-            {% if products.has_next %}
-                <a href="?{{queries.urlencode}}&amp;page={{ products.next_page_number }}">next</a>
-                <a href="?{{queries.urlencode}}&amp;page={{ products.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
+        </div>
     </div>
+    <script>
+        function addQtdByPage() {
+            var qtd = document.getElementById("qtdByPage");
+            var url = "?{{queries.urlencode}}"
+            url = url.replaceAll(/&amp;qtdByPage=\d+/gi, '')
+            url += "&page=1&qtdByPage="+qtd.options[qtd.selectedIndex].text;
+            var urlGO = url.replaceAll('&amp;', '&');
+            var goButton = document.getElementById("goHref");
+            goButton.href = urlGO;
+
+            goButton.click();
+        }
+    </script>
 {% endblock %}
