@@ -33,6 +33,7 @@
     height: 100%;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
 }
 
 .search{
@@ -58,13 +59,15 @@
     text-align: left;
     font: normal normal 400 24px/34px Bahnschrift;
     letter-spacing: 0.48px;
-    /* color: #A7A7A7; */
+    padding-top: 5px;
     opacity: 1;
 }
 
 .search button{
     background: transparent;
     border: none;
+    padding-top: 5px;
+    padding-left: 10px;
 }
 
 .checkSearch {

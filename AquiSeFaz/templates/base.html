@@ -43,8 +43,9 @@
           <img src="{% static 'images/Ativo_15.png' %}" height="25%">
         </nav>
         <div class="content">
-          {% block content %} {% endblock %}
+          {% if products %}
+            {% block content %} {% endblock %}
+          {% endif %}
         </div>
-
   </body>
 </html>

@@ -55,7 +55,7 @@ def selectBase(request):
 
     if 'searchTerm' in request.GET:
         if request.GET['searchTerm'] == None or request.GET['searchTerm'] == '':
-            raise ValueError
+            return render(request, 'searchPrice.html', status=400)
 
         basesList = request.GET.getlist('bases')
 

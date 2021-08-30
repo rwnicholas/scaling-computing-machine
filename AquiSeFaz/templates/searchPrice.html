@@ -44,7 +44,7 @@
                 <a href="" hidden id="goHref"></a>
             </div>
             <div class="step-links">
-                {% for i in page_range|default_if_none:products.paginator.get_elided_page_range %}
+                {% for i in page_range %}
                     {% if products.number == i %}
                         <a class="buttonStep buttonlink active_buttonlink" href="">{{ i }}</a>
                     {% else %}
